@@ -1,0 +1,471 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "The Game",
+    "version": "1.0.0",
+    "description": "This document contains references and guidelines for The Game API services based on simple REST principles. The Game web API endpoints return JSON metadata."
+  },
+  "tags": [
+    {
+      "name": "Players",
+      "description": "This section contains all information about The Game players API."
+    }
+  ],
+  "paths": {
+    "/api/v1/players": {
+      "get": {
+        "tags": ["Players"],
+        "summary": "Get all players",
+        "description": "This endpoint can be used for getting all The Game players.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "username",
+            "description": "Insert usename to search user",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "description": "Insert email to search user",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "experience",
+            "description": "Insert experience to search",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "description": "Insert level to search",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "Some error occurred while retrieving players."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Players"],
+        "summary": "Create new player",
+        "description": "This endpoint can be used for creating new player.",
+        "requestBody": {
+          "description": "Player's information to be added to the system.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request-body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "username or password cannot be empty!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "Some error occurred while creating the Player."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/players/{playerId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/player-id"
+        }
+      ],
+      "get": {
+        "tags": ["Players"],
+        "summary": "Get a specific player",
+        "description": "This endpoint can be used for getting a specific player information.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Not found",
+                  "message": "Player not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Some error occurred while retrieving the player."
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Players"],
+        "summary": "Update player's information",
+        "description": "This endpoint can be used for updating a player's information.",
+        "requestBody": {
+          "description": "Player's information to be updated",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request-body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Success",
+                  "message": "Player with id 1 successfully updated"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Not found",
+                  "message": "Player not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "Failed to update"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Players"],
+        "summary": "Delete player",
+        "description": "This endpoint can be used to delete player",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Success",
+                  "message": "Player with id 1 was deleted successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "cannot delete player. maybe player was not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "Internal Server Error. cannot delete player"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/players/exp/{playerId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/player-id"
+        }
+      ],
+      "post": {
+        "tags": ["Players"],
+        "summary": "Update player's experience",
+        "description": "This endpoint can be used to update player's experience",
+        "requestBody": {
+          "description": "Player's experience to be updated",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exp": {
+                    "type": "integer",
+                    "example": 2500
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Success",
+                  "message": "Player with id 1 gain 2500 exp. Total exp = 2500"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responsesMessage"
+                },
+                "example": {
+                  "result": "Failed",
+                  "message": "Cannot update player with id 1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "exampleplayer"
+          },
+          "email": {
+            "type": "string",
+            "example": "player@binar.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2b$10$o7A6Li4s09DhqVX9JxSre.VBSC3JTQAB8X.txmOlGYTyDrWbfeVzS"
+          },
+          "experience": {
+            "type": "integer",
+            "example": 122
+          },
+          "lvl": {
+            "type": "integer",
+            "example": 12
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2023-03-03T08:05:33.115Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2023-03-03T08:05:33.115Z"
+          }
+        }
+      },
+      "request-body": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "exampleplayer"
+          },
+          "email": {
+            "type": "string",
+            "example": "player@binar.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "someStrongPassword123"
+          },
+          "experience": {
+            "type": "integer",
+            "example": 0
+          },
+          "lvl": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "responsesMessage": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "responsesUser": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "player-id": {
+        "name": "playerId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
