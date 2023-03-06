@@ -42,10 +42,10 @@
   flex-direction: column;
 }
 
-form {
+/* form {
   display: flex;
   flex-direction: column;
-}
+} */
 
 button {
   background-color: #61dafb !important;

@@ -29,12 +29,16 @@ const CreatePlayerForm = () => {
 
   const editPlayer = (e) => {
     e.preventDefault();
-    setStatus("Success updating a player");
-    setUsername(`Username: ${usernameInput.current.value}`);
-    setEmail(`Email: ${emailInput.current.value}`);
-    setPassword(`Password: ${passwordInput.current.value}`);
-    setExperience(`Experience: ${experienceInput.current.value}`);
-    setLevel(`Level: ${levelInput.current.value}`);
+    if (username === "") {
+      return setStatus("Create player first!");
+    } else {
+      setStatus("Success updating a player");
+      setUsername(`Username: ${usernameInput.current.value}`);
+      setEmail(`Email: ${emailInput.current.value}`);
+      setPassword(`Password: ${passwordInput.current.value}`);
+      setExperience(`Experience: ${experienceInput.current.value}`);
+      setLevel(`Level: ${levelInput.current.value}`);
+    }
   };
 
   return (
